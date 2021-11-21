@@ -1,28 +1,38 @@
 package com.example.dvdshopspring.service;
 
 import com.example.dvdshopspring.dao.DvdDao;
+import com.example.dvdshopspring.dao.DvdDaoDb;
+import com.example.dvdshopspring.dao.exceptions.DatabaseConnectionException;
+import com.example.dvdshopspring.dao.exceptions.DvdAdditionException;
 import com.example.dvdshopspring.dao.exceptions.UnableToLoadException;
 import com.example.dvdshopspring.dao.exceptions.UnableToSaveException;
 import com.example.dvdshopspring.dto.Dvd;
 import com.example.dvdshopspring.dto.Fields;
 import com.example.dvdshopspring.service.exceptions.DvdWasNotFoundException;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
 
+@Service
 public class DvdService  {
     private ArrayList<Dvd> dvdArrayList = new ArrayList<>();
-    private final DvdDao dvdDao = new DvdDao();
+    private final DvdDaoDb dvdDaoDb;
 
-    public void addDvd (Dvd dvd){
-        dvdArrayList.add(dvd);
+    private DvdService(DvdDaoDb dvdDaodb){
+        this.dvdDaoDb = dvdDaodb;
     }
 
-    public void addDvd  (String title, String date, int mpaaRating, String nameOfDirector, String studio,
-                        String note){
-        Dvd dvd = new Dvd(title, date, mpaaRating, nameOfDirector, studio, note);
-        dvdArrayList.add(dvd);
+    public void addDvd (Dvd dvd) throws DvdAdditionException, DatabaseConnectionException {
+        dvdDaoDb.add(dvd);
     }
+
+//    public void addDvd  (String title, String date, int mpaaRating, String nameOfDirector, String studio,
+//                        String note){
+//        Dvd dvd = new Dvd(title, date, mpaaRating, nameOfDirector, studio, note);
+//        dvdArrayList.add(dvd);
+//    }
 
     public void removeDvd (String title){
         ListIterator<Dvd> iterator = dvdArrayList.listIterator();
@@ -71,11 +81,11 @@ public class DvdService  {
         return dvdArrayList;
     }
 
-    public void saveDvdLib () throws UnableToSaveException {
-        dvdDao.save(dvdArrayList);
-    }
-
-    public void loadDvdLib () throws UnableToLoadException {
-        dvdArrayList = dvdDao.load();
-    }
+//    public void saveDvdLib () throws UnableToSaveException {
+//        dvdDao.save(dvdArrayList);
+//    }
+//
+//    public void loadDvdLib () throws UnableToLoadException {
+//        dvdArrayList = dvdDao.load();
+//    }
 }

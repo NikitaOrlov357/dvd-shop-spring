@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
   "title": "name",
-  "date":"2202.11.22",
+  "date":"2202-11-22",
   "mpaaRating": 123,
   "nameOfDirector": "Robert",
   "studio":"rtu",

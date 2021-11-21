@@ -5,14 +5,12 @@ import com.example.dvdshopspring.dao.exceptions.DvdAdditionException;
 import com.example.dvdshopspring.dto.Dvd;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.DateTimeException;
 
-@Component
+@Repository
 public class DvdDaoDb {
     private String url;
     private String user;
@@ -28,14 +26,30 @@ public class DvdDaoDb {
     public void add (Dvd dvd) throws DvdAdditionException, DatabaseConnectionException {
         try (Connection connection = DriverManager.getConnection
                 (url, user, password )){
-            try (Statement statement = connection.createStatement()) {
+            String sql = "INSERT INTO dvdshop (mpaa_rating, title, studio, note, name_of_director, \"date\") VALUES " +
+                    "(?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
                 //statement.execute("INSERT INTO table VALUES (23, \'name\')");
 
-                String st = dvd.getTitle();
-                int mp = dvd.getMpaaRating();
-                statement.executeUpdate("INSERT INTO dvdshop (mpaa_rating, name) VALUES (" + mp +","+ st + ")");
+                String ttl = dvd.getTitle();
+                int mpr = dvd.getMpaaRating();
+                String dt = dvd.getDate();
+                String nofd = dvd.getNameOfDirector();
+                String st = dvd.getStudio();
+                String nt = dvd.getNote();
 
+                preparedStatement.setString(2, ttl);
+                preparedStatement.setInt(1, mpr);
+                preparedStatement.setString(3, st);
+                preparedStatement.setString(4, nt);
+                preparedStatement.setString(5, nofd);
+                preparedStatement.setString(6, dt);
+                System.out.println(preparedStatement.toString());
+                preparedStatement.execute();
+
+//                statement.executeUpdate("INSERT INTO dvdshop (mpaa_rating, name,) VALUES (" + mpr +","+
+//                        "'" + ttl + "'" + "," + st + "," + nt + "," + nofd + "," + dt + ")");
             }
             catch (SQLException exception){
                 throw new DvdAdditionException(exception);
