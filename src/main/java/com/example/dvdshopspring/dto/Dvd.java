@@ -48,7 +48,7 @@ public class Dvd implements Serializable {
     }
 
     public String getDate() {
-        return date.toString();
+        return date;
     }
 
     public void setDate(String date) {
