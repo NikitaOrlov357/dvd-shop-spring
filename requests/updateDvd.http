@@ -1,0 +1,12 @@
+PATCH localhost:444/dvd
+Content-Type: application/json
+
+
+{
+  "title": "papix",
+  "date":"2000-11-22",
+  "mpaaRating": 23,
+  "nameOfDirector": "Bert",
+  "studio":"rtu",
+  "note":"plusick"
+}

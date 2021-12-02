@@ -2,10 +2,7 @@ package com.example.dvdshopspring.service;
 
 import com.example.dvdshopspring.dao.DvdDao;
 import com.example.dvdshopspring.dao.DvdDaoDb;
-import com.example.dvdshopspring.dao.exceptions.DatabaseConnectionException;
-import com.example.dvdshopspring.dao.exceptions.DvdAdditionException;
-import com.example.dvdshopspring.dao.exceptions.UnableToLoadException;
-import com.example.dvdshopspring.dao.exceptions.UnableToSaveException;
+import com.example.dvdshopspring.dao.exceptions.*;
 import com.example.dvdshopspring.dto.Dvd;
 import com.example.dvdshopspring.dto.Fields;
 import com.example.dvdshopspring.service.exceptions.DvdWasNotFoundException;
@@ -33,6 +30,14 @@ public class DvdService  {
 //        Dvd dvd = new Dvd(title, date, mpaaRating, nameOfDirector, studio, note);
 //        dvdArrayList.add(dvd);
 //    }
+
+    public void deleteDvdByTitle (String title ) throws DvdDeleteException, DatabaseConnectionException{
+        dvdDaoDb.delete(title);
+    }
+
+    public void updateDvd (Dvd dvd ) throws DvdUpdateException, DatabaseConnectionException{
+        dvdDaoDb.update(dvd);
+    }
 
     public void removeDvd (String title){
         ListIterator<Dvd> iterator = dvdArrayList.listIterator();

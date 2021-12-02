@@ -20,6 +20,14 @@ public class Dvd implements Serializable {
         this.note = note;
     }
 
+    public Dvd (String title){
+        this.title = title;
+    }
+
+    public Dvd(){
+
+    }
+
     @Override
     public String toString() {
         return  "1) название - " + title + '\n' +

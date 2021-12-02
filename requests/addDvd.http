@@ -2,7 +2,7 @@ POST localhost:444/dvd
 Content-Type: application/json
 
 {
-  "title": "name",
+  "title": "me",
   "date":"2202-11-22",
   "mpaaRating": 123,
   "nameOfDirector": "Robert",

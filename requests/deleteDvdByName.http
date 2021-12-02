@@ -1,0 +1,6 @@
+DELETE localhost:444/dvd
+Content-Type: application/json
+
+{
+  "title": "popix"
+}

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form th:action="@{/dvd}" method="post" th:object="${dvd}">
+        название диска <input type="text" th:field="*{title}" >
+        <br>
+        дата выхода <input type="text" th:field="*{date}">
+        <br>
+        mpaa_rating <input type="text" th:field="*{mpaaRating}">
+        <br>
+        имя директора <input type="text" th:field="*{nameOfDirector}">
+        <br>
+        студия <input type="text" th:field="*{studio}">
+        <br>
+        комментарий <input type="text" th:field="*{note}">
+        <input type="submit">
+    </form>
+</body>
+</html>
