@@ -1,17 +1,17 @@
 package com.example.dvdshopspring.dao;
 
-import com.example.dvdshopspring.dao.exceptions.DatabaseConnectionException;
-import com.example.dvdshopspring.dao.exceptions.DvdAdditionException;
-import com.example.dvdshopspring.dao.exceptions.DvdDeleteException;
-import com.example.dvdshopspring.dao.exceptions.DvdUpdateException;
+import com.example.dvdshopspring.dao.exceptions.*;
 import com.example.dvdshopspring.dto.Dvd;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.time.DateTimeException;
+import java.util.ArrayList;
 
+@Slf4j
 @Repository
 public class DvdDaoDb {
     private String url;
@@ -72,10 +72,9 @@ public class DvdDaoDb {
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
                 preparedStatement.setString(1, title);
-                System.out.println(preparedStatement);
+                log.debug("sql={}", preparedStatement);
                 preparedStatement.execute();
-                System.out.println("удалено");
-
+                log.info("удален диск {}", title );
             }
             catch (SQLException exception){
                 throw new DvdDeleteException(exception);
@@ -125,5 +124,34 @@ public class DvdDaoDb {
             throw new DatabaseConnectionException (exception);
         }
     }
+
+    public ArrayList<Dvd> getAllDvd ()throws SQLException, GetAllDvdException {
+            try (Connection connection = DriverManager.getConnection
+                    (url, user, password )){
+                String sql = "SELECT * FROM dvdshop";
+                try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                    ResultSet resultSet = preparedStatement.executeQuery();
+                    ArrayList<Dvd> allDvd = new ArrayList<>();
+                    while (resultSet.next()){
+                        int mpr = resultSet.getInt("mpaa_rating");
+                        String dt = resultSet.getString("title");
+                        String nofd = resultSet.getString("studio");
+                        String st = resultSet.getString("note");
+                        String nt = resultSet.getString("name_of_director");
+                        String ttl = resultSet.getString("date");
+                        Dvd dvd = new Dvd(ttl, dt, mpr,nofd,st,nt);
+                        allDvd.add(dvd);
+                    }
+                    return allDvd;
+                }
+                catch (SQLException exception){
+                    throw new GetAllDvdException(exception);
+                }
+
+            }
+            catch (SQLException exception){
+                throw new DatabaseConnectionException (exception);
+            }
+        }
 
 }

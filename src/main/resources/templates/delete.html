@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/delete/dvd}" method="post" th:object="${dvd}">
+    название диска <input type="text" th:field="*{title}" >
+    <input type="submit">
+</form>
+</body>
+</html>

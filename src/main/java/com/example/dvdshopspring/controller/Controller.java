@@ -57,7 +57,7 @@ public class Controller {
             dvdService.updateDvd(dvd);
         }
         catch (DvdUpdateException exception){
-            return "ошибка с удалением";
+            return "ошибка с исправлением";
         }
         catch (DatabaseConnectionException exception){
             return "ошибка с подключением";
