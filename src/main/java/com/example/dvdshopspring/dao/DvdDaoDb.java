@@ -2,6 +2,7 @@ package com.example.dvdshopspring.dao;
 
 import com.example.dvdshopspring.dao.exceptions.*;
 import com.example.dvdshopspring.dto.Dvd;
+import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -14,25 +15,19 @@ import java.util.ArrayList;
 @Slf4j
 @Repository
 public class DvdDaoDb {
-    private String url;
-    private String user;
-    private String password;
 
-    public DvdDaoDb(@Value("${db.url}") String url, @Value("${db.user}") String user,
-                    @Value("${db.password}") String password) {
-        this.url = url;
-        this.user = user;
-        this.password = password;
+    private HikariDataSource hikariDataSource;
+
+    public DvdDaoDb( HikariDataSource hikariDataSource) {
+
+        this.hikariDataSource = hikariDataSource;
     }
 
     public void add (Dvd dvd) throws DvdAdditionException, DatabaseConnectionException {
-        try (Connection connection = DriverManager.getConnection
-                (url, user, password )){
+        try (Connection connection = hikariDataSource.getConnection()){
             String sql = "INSERT INTO dvdshop (mpaa_rating, title, studio, note, name_of_director, \"date\") VALUES " +
                     "(?, ?, ?, ?, ?, ?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-
-                //statement.execute("INSERT INTO table VALUES (23, \'name\')");
 
                 String ttl = dvd.getTitle();
                 int mpr = dvd.getMpaaRating();
@@ -47,11 +42,9 @@ public class DvdDaoDb {
                 preparedStatement.setString(4, nt);
                 preparedStatement.setString(5, nofd);
                 preparedStatement.setString(6, dt);
-                System.out.println(preparedStatement.toString());
+                System.out.println(preparedStatement);
                 preparedStatement.execute();
 
-//                statement.executeUpdate("INSERT INTO dvdshop (mpaa_rating, name,) VALUES (" + mpr +","+
-//                        "'" + ttl + "'" + "," + st + "," + nt + "," + nofd + "," + dt + ")");
             }
             catch (SQLException exception){
                 throw new DvdAdditionException(exception);
@@ -66,7 +59,7 @@ public class DvdDaoDb {
     }
 
     public void delete (String title) throws DvdDeleteException, DatabaseConnectionException {
-        try (Connection connection = DriverManager.getConnection(url, user, password )){
+        try (Connection connection = hikariDataSource.getConnection()){
 
             String sql = "DELETE FROM dvdshop WHERE title=?" ;
             try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -89,7 +82,7 @@ public class DvdDaoDb {
     }
 
     public void update (Dvd dvd) throws DvdUpdateException, DatabaseConnectionException {
-        try (Connection connection = DriverManager.getConnection(url, user, password )){
+        try (Connection connection = hikariDataSource.getConnection()){
 
             String sql = "UPDATE dvdshop set mpaa_rating=?, studio=?, note=?, name_of_director=?, date=? WHERE title=?";
 
@@ -125,22 +118,14 @@ public class DvdDaoDb {
         }
     }
 
-    public ArrayList<Dvd> getAllDvd ()throws SQLException, GetAllDvdException {
-            try (Connection connection = DriverManager.getConnection
-                    (url, user, password )){
+    public ArrayList<Dvd> getAllDvd ()throws DatabaseConnectionException, GetAllDvdException {
+            try (Connection connection = hikariDataSource.getConnection()){
                 String sql = "SELECT * FROM dvdshop";
                 try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                     ResultSet resultSet = preparedStatement.executeQuery();
                     ArrayList<Dvd> allDvd = new ArrayList<>();
                     while (resultSet.next()){
-                        int mpr = resultSet.getInt("mpaa_rating");
-                        String dt = resultSet.getString("title");
-                        String nofd = resultSet.getString("studio");
-                        String st = resultSet.getString("note");
-                        String nt = resultSet.getString("name_of_director");
-                        String ttl = resultSet.getString("date");
-                        Dvd dvd = new Dvd(ttl, dt, mpr,nofd,st,nt);
-                        allDvd.add(dvd);
+                        allDvd.add(getDvd(resultSet));
                     }
                     return allDvd;
                 }
@@ -149,9 +134,42 @@ public class DvdDaoDb {
                 }
 
             }
+            catch (GetAllDvdException exception){
+                throw exception;
+            }
             catch (SQLException exception){
                 throw new DatabaseConnectionException (exception);
             }
         }
+    public Dvd getDvdByName (String title)throws DatabaseConnectionException, GetDvdByNameException  {
+        try (Connection connection = hikariDataSource.getConnection()){
+            String sql = "SELECT * FROM dvdshop WHERE title = ?" ;
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, title);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                return getDvd(resultSet);
+            }
+            catch (SQLException exception){
+                throw new GetDvdByNameException(exception);
+            }
+
+        }
+        catch (GetDvdByNameException exception){
+            throw exception;
+        }
+        catch (SQLException exception){
+            throw new DatabaseConnectionException (exception);
+        }
+    }
+
+    private Dvd getDvd (ResultSet resultSet) throws SQLException{
+        int mpr = resultSet.getInt("mpaa_rating");
+        String dt = resultSet.getString("date");
+        String nofd = resultSet.getString("name_of_director");
+        String st = resultSet.getString("studio");
+        String nt = resultSet.getString("note");
+        String ttl = resultSet.getString("title");
+        return new Dvd(ttl, dt, mpr,nofd,st,nt);
+    }
 
 }

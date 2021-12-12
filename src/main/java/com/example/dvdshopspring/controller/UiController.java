@@ -3,13 +3,18 @@ package com.example.dvdshopspring.controller;
 import com.example.dvdshopspring.dao.exceptions.DatabaseConnectionException;
 import com.example.dvdshopspring.dao.exceptions.DvdAdditionException;
 import com.example.dvdshopspring.dao.exceptions.DvdDeleteException;
+import com.example.dvdshopspring.dao.exceptions.GetAllDvdException;
 import com.example.dvdshopspring.dto.Dvd;
 import com.example.dvdshopspring.service.DvdService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.ArrayList;
+
+@Slf4j
 @Controller
 public class UiController {
     private final DvdService dvdService;
@@ -42,5 +47,19 @@ public class UiController {
         System.out.println(dvd);
         dvdService.deleteDvdByTitle(dvd.getTitle());
         return new RedirectView("/ui/dvd/deleting");
+    }
+
+    @GetMapping(value = "dvd")
+    public String showAllDvd (Model model) throws DatabaseConnectionException, GetAllDvdException {
+        ArrayList<Dvd> list = dvdService.getDvdArrayList();
+        log.debug(list.toString());
+        model.addAttribute("dvds", list);
+        return "show";
+    }
+
+    @GetMapping("test")
+    public String test(){
+
+        return null;
     }
 }

@@ -31,6 +31,10 @@ public class DvdService  {
 //        dvdArrayList.add(dvd);
 //    }
 
+    public void getAllDvd () throws GetAllDvdException,DatabaseConnectionException {
+        dvdDaoDb.getAllDvd();
+    }
+
     public void deleteDvdByTitle (String title ) throws DvdDeleteException, DatabaseConnectionException{
         dvdDaoDb.delete(title);
     }
@@ -38,6 +42,11 @@ public class DvdService  {
     public void updateDvd (Dvd dvd ) throws DvdUpdateException, DatabaseConnectionException{
         dvdDaoDb.update(dvd);
     }
+
+    public ArrayList<Dvd> getDvdArrayList() throws DatabaseConnectionException, GetAllDvdException {
+        return dvdDaoDb.getAllDvd();
+    }
+
 
     public void removeDvd (String title){
         ListIterator<Dvd> iterator = dvdArrayList.listIterator();
@@ -74,17 +83,9 @@ public class DvdService  {
     }
 
     public Dvd getDvdByName (String title) throws DvdWasNotFoundException{
-        for (Dvd dvd : dvdArrayList) {
-            if (dvd.getTitle().equals(title)) {
-                return dvd;
-            }
-        }
-        throw new DvdWasNotFoundException();
+        return null;
     }
 
-    public ArrayList<Dvd> getDvdArrayList() {
-        return dvdArrayList;
-    }
 
 //    public void saveDvdLib () throws UnableToSaveException {
 //        dvdDao.save(dvdArrayList);
