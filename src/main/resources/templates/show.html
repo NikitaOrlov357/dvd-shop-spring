@@ -3,12 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/table.css}">
 </head>
 <body>
+<table>
+    <thead>
+    <tr>
+        <th>
+            название диска
+        </th>
+        <th>
+            дата выхода
+        </th>
+        <th>
+            mpaa_rating
+        </th>
+        <th>
+            имя директора
+        </th>
+        <th>
+            студия
+        </th>
+        <th>
+            комментарий
+        </th>
+    </tr>
+    </thead>
 
-<div th:each="dvd : ${dvds}">
-    <p>[[${dvd.getTitle()}]] [[${dvd.getMpaaRating()}]]</p>
-</div>
+    <tbody>
+        <tr th:each="dvd : ${dvds}">
+            <td><p th:text="${dvd.getTitle()}"></p></td>
+            <td><p th:text="${dvd.getDate()}"></p></td>
+            <td><p th:text="${dvd.getMpaaRating()}"></p></td>
+            <td><p th:text="${dvd.getNameOfDirector()}"></p></td>
+            <td><p th:text="${dvd.getStudio()}"></p></td>
+            <td><p th:text="${dvd.getNote()}"></p></td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+
 
 </body>
 </html>
