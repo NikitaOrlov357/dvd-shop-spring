@@ -4,12 +4,9 @@ import com.example.dvdshopspring.dao.exceptions.*;
 import com.example.dvdshopspring.dto.Dvd;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
-import java.time.DateTimeException;
 import java.util.ArrayList;
 
 @Slf4j
@@ -42,7 +39,6 @@ public class DvdDaoDb {
                 preparedStatement.setString(4, nt);
                 preparedStatement.setString(5, nofd);
                 preparedStatement.setString(6, dt);
-                System.out.println(preparedStatement);
                 preparedStatement.execute();
 
             }
@@ -101,10 +97,7 @@ public class DvdDaoDb {
                 preparedStatement.setString(4, nofd);
                 preparedStatement.setString(5, dt);
                 preparedStatement.setString(6, ttl);
-
-                System.out.println(preparedStatement);
                 preparedStatement.execute();
-                System.out.println("поменялось");
             }
             catch (SQLException exception){
                 throw new DvdUpdateException(exception);

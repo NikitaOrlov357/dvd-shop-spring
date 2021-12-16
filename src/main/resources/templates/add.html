@@ -1,23 +1,82 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.tdymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/table.css}">
 </head>
 <body>
-    <form th:action="@{/dvd}" method="post" th:object="${dvd}">
-        название диска <input type="text" th:field="*{title}" >
-        <br>
-        дата выхода <input type="text" th:field="*{date}">
-        <br>
-        mpaa_rating <input type="text" th:field="*{mpaaRating}">
-        <br>
-        имя директора <input type="text" th:field="*{nameOfDirector}">
-        <br>
-        студия <input type="text" th:field="*{studio}">
-        <br>
-        комментарий <input type="text" th:field="*{note}">
-        <input type="submit">
-    </form>
+        <table class="table">
+            <form th:action="@{/dvd}" th:method="post" th:object="${dvd}">
+            <tr>
+                <th>
+                    параметр
+                </th>
+                <th>
+                    значение
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    название диска
+                </td>
+                <td>
+                    <input type="text" th:field="*{title}" >
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    дата выхода
+
+                </td>
+                <td>
+                    <input type="text" th:field="*{date}">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    mpaa_rating
+                </td>
+                <td>
+                    <input type="text" th:field="*{mpaaRating}">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    имя директора
+                </td>
+                <td>
+                    <input type="text" th:field="*{nameOfDirector}">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                студия
+                </td>
+                <td>
+                    <input type="text" th:field="*{studio}">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    комментарий
+                </td>
+                <td>
+                    <input type="text" th:field="*{note}">
+                </td>
+            </tr>
+            <tr>
+                <td>
+
+                </td>
+                <td>
+                    <input type="submit">
+                </td>
+            </tr>
+            </form>
+        </table>
+
+
+
 </body>
 </html>

@@ -37,14 +37,14 @@ public class UiController {
 
     @PostMapping(value = "dvd")
     public RedirectView addDvd(@ModelAttribute Dvd dvd) throws DvdAdditionException, DatabaseConnectionException {
-        System.out.println(dvd);
+        log.debug(dvd.toString());
         dvdService.addDvd(dvd);
+        log.debug("добавлено");
         return new RedirectView("/ui/dvd/adding");
     }
 
     @PostMapping (value = "delete/dvd")
     public RedirectView deleteDvd (@ModelAttribute Dvd dvd) throws DatabaseConnectionException, DvdDeleteException {
-        System.out.println(dvd);
         dvdService.deleteDvdByTitle(dvd.getTitle());
         return new RedirectView("/ui/dvd/deleting");
     }
