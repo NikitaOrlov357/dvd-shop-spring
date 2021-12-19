@@ -16,6 +16,8 @@ import java.util.ArrayList;
 
 @Slf4j
 @Controller
+
+
 public class UiController {
     private final DvdService dvdService;
 
@@ -57,9 +59,16 @@ public class UiController {
         return "show";
     }
 
+    @GetMapping(value = "menu")
+    public String mainMenu (){
+        return "menu";
+    }
+
     @GetMapping("test")
     public String test(){
 
         return null;
     }
+
+
 }

@@ -2,12 +2,32 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>deleting</title>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/table.css}">
 </head>
 <body>
-<form th:action="@{/delete/dvd}" method="post" th:object="${dvd}">
-    название диска <input type="text" th:field="*{title}" >
-    <input type="submit">
+    <table class="table">
+        <form th:action="@{/delete/dvd}" method="post" th:object="${dvd}">
+
+            <tr>
+                <td>
+                    название диска
+                </td>
+                <td>
+                    <input type="text" th:field="*{title}" >
+                </td>
+            </tr>
+            <tr>
+                <td>
+
+                </td>
+                <td>
+                    <input type="submit">
+                </td>
+            </tr>
+        </form>
+    </table>
+
 </form>
 </body>
 </html>

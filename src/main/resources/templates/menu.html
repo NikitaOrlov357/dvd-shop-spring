@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>menu</title>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/table.css}">
+</head>
+<body>
+<table>
+        <th>
+            MENU
+        </th>
+        <tr>
+            <td>
+                <form th:action="@{/ui/dvd/adding}" th:method="get"><input type="submit" value="adding"></form>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <form th:action="@{/ui/dvd/deleting}" th:method="get"><input type="submit" value="deleting"></form>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <form th:action="@{/dvd}" th:method="get"><input type="submit" value="show all"></form>
+            </td>
+        </tr>
+</table>
+
+</body>
+</html>
